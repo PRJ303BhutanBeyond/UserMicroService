@@ -3,13 +3,14 @@ package bt.edu.gcit.usermicroservice.service;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 import bt.edu.gcit.usermicroservice.dao.FeedbackDAO;
 import bt.edu.gcit.usermicroservice.entity.Feedback;
-
+import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.exception.FileSizeException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
@@ -62,5 +63,17 @@ public class FeedbackServiceImpl implements FeedbackService {
         photo.transferTo(uploadPath);
         feedback.setprofilePhoto(filename);
         feedbackDAO.save(feedback);
+    }
+
+    @Override
+    @Transactional
+    public List<Feedback> getAllFeedbacks() {
+        return feedbackDAO.getAllFeedbacks();
+    }
+
+    @Override
+    @Transactional
+    public void deleteFeedback(long id) {
+        feedbackDAO.deleteFeedback(id);
     }
 }

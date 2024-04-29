@@ -1,11 +1,15 @@
 package bt.edu.gcit.usermicroservice.rest;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bt.edu.gcit.usermicroservice.entity.Feedback;
+import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.service.FeedbackService;
 
 @RestController
@@ -58,4 +63,21 @@ public class FeedbackRestController {
             throw new RuntimeException("Error while processing feedback", e);
         }
     }
+
+    @GetMapping("/feedbacks/all")
+    public List<Feedback> getAllFeedbacks() {
+        return feedbackService.getAllFeedbacks();
+    }
+
+    @GetMapping("/feedbacks/{id}")
+    public Feedback getFeedback(@PathVariable int id) {
+        return feedbackService.findByID(id);
+    }
+
+    @DeleteMapping("/feedbacks/delete/{id}")
+    public void deleteFeedback(@PathVariable long id) {
+        feedbackService.deleteFeedback(id);
+    }
+
+
 }
