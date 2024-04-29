@@ -78,6 +78,7 @@ public class BhutanBeyondSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/tourists/delete/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tourists/all").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tourists/{id}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/feedbacks").permitAll()
 
         )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

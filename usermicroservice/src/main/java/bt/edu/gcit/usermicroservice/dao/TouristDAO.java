@@ -2,10 +2,9 @@ package bt.edu.gcit.usermicroservice.dao;
 
 import bt.edu.gcit.usermicroservice.entity.Tourist;
 
-import java.io.IOException;
+
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import bt.edu.gcit.usermicroservice.entity.AuthenticationType;
 

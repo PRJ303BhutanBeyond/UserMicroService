@@ -6,6 +6,7 @@ import java.io.IOException;
 import bt.edu.gcit.usermicroservice.entity.AuthenticationType;
 
 public interface UserService {
+    
     User save(User user);
 
     boolean isEmailDuplicate(String email);
