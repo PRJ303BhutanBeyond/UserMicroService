@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+                return new PasswordAuthentication("12  ", "ptwe rdxi trtr bbwx");
             }
         });
 
