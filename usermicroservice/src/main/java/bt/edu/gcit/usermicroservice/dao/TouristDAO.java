@@ -29,4 +29,5 @@ public interface TouristDAO {
     String getOTPById(int touristId);
 
     void updateAuthenticationType(Long touristId,AuthenticationType type);
+
 }

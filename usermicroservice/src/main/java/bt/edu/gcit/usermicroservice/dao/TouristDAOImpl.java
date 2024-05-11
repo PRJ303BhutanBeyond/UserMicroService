@@ -9,8 +9,11 @@ import bt.edu.gcit.usermicroservice.exception.InvalidOtpException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.UUID;
+
 import bt.edu.gcit.usermicroservice.entity.AuthenticationType;
 
 @Repository
@@ -24,6 +27,7 @@ public class TouristDAOImpl implements TouristDAO {
     }
 
     @Override
+    @Transactional
     public Tourist registerTourist(Tourist tourist) {
         tourist.setAuthenticationType(AuthenticationType.DATABASE);
         entityManager.persist(tourist);
@@ -39,6 +43,7 @@ public class TouristDAOImpl implements TouristDAO {
     }
 
     @Override
+    @Transactional
     public void enable(int id, boolean enabled, String otp) {
         Tourist tourist = entityManager.find(Tourist.class, id);
         if (tourist == null) {
@@ -76,6 +81,7 @@ public class TouristDAOImpl implements TouristDAO {
     }
 
     @Override
+    @Transactional
     public Tourist updateTourist(Tourist Tourist) {
         return entityManager.merge(Tourist);
     }
@@ -98,6 +104,7 @@ public class TouristDAOImpl implements TouristDAO {
     }
 
     @Override
+    @Transactional
     public String getOTPById(int touristId) {
         Tourist tourist = entityManager.find(Tourist.class, touristId);
         return (tourist != null) ? tourist.getOtp() : null;

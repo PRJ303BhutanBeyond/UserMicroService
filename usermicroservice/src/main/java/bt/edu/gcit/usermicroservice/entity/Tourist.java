@@ -12,25 +12,25 @@ public class Tourist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
-
+    
     @Column(nullable = false)
     private String password;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String country;
 
     @Column(name = "created_time", nullable = false)
     private Date createdTime;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean enabled; // Changed from Boolean to boolean
 
     @Column(name = "profile_photo", length = 64)

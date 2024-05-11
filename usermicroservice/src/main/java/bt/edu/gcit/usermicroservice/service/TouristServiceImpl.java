@@ -8,6 +8,8 @@ import bt.edu.gcit.usermicroservice.dao.TouristDAO;
 import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.exception.FileSizeException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -27,9 +29,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.IOException;
 import javax.mail.*;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class TouristServiceImpl implements TouristService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final TouristDAO touristDAO;
     private final PasswordEncoder passwordEncoder;
@@ -61,7 +67,7 @@ public class TouristServiceImpl implements TouristService {
 
     // Generate a 6-digit OTP
     private String generateOTP() {
-        int otpNumber = 100000 + random.nextInt(900000); // Generates a random 6-digit number
+        int otpNumber = 1000 + random.nextInt(9000); // Generates a random 6-digit number
         return String.valueOf(otpNumber);
     }
 
@@ -196,6 +202,54 @@ public class TouristServiceImpl implements TouristService {
         } else {
             String firstName = names[0];
             tourist.setFullName(firstName);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void resendOTP(String email) {
+        Tourist tourist = findByEmail(email);
+        if (tourist == null) {
+            throw new UserNotFoundException("User not found with email: " + email);
+        }
+
+        String newOTP = generateOTP1();
+        tourist.setOtp(newOTP);
+
+        entityManager.persist(tourist);
+
+        sendOTPEmail1(tourist.getEmail(), newOTP);
+    }
+
+    private String generateOTP1() {
+        int otpNumber = 1000 + random.nextInt(9000); // Generates a random 6-digit number
+        return String.valueOf(otpNumber);
+    }
+
+    private void sendOTPEmail1(String recipientEmail, String otp) {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+            message.setSubject("Your OTP for Verification");
+            message.setText("Your OTP is: " + otp);
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            System.err.println("Error sending email: " + mex.getMessage());
+            mex.printStackTrace();
         }
     }
 }

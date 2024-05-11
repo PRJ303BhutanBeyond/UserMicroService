@@ -34,4 +34,6 @@ public interface TouristService {
 
     void addNewTouristUponOAuthLogin(String name, String email, AuthenticationType authenticationType);
 
+    void resendOTP(String email);
+
 }
