@@ -54,7 +54,8 @@ public class TouristRestController {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public TouristRestController(TouristService touristService,TouristDAO touristDAO, PasswordEncoder passwordEncoder) {
+    public TouristRestController(TouristService touristService, TouristDAO touristDAO,
+            PasswordEncoder passwordEncoder) {
         this.touristService = touristService;
         this.touristDAO = touristDAO;
         this.passwordEncoder = passwordEncoder;
@@ -145,13 +146,13 @@ public class TouristRestController {
         touristService.deleteTourist(id);
     }
 
-    @GetMapping("/tourists/{email}/resend-otp")
-    public String resendOTP(@PathVariable String email) {
+    @GetMapping("/tourists/{id}/resend-otp")
+    public String resendOTP(@PathVariable int id) {
         try {
-            touristService.resendOTP(email);
-            return "OTP has been resent to " + email;
+            touristService.resendOTP(id);
+            return "OTP has been resent to " + id;
         } catch (UserNotFoundException e) {
-            return "User not found with email: " + email;
+            return "User not found with email: " + id;
         } catch (Exception e) {
             return "Failed to resend OTP: " + e.getMessage();
         }
@@ -171,7 +172,7 @@ public class TouristRestController {
         // Generate a new OTP
         String newOtp = generateOTP();
         // Update the OTP in the database
-        tourist.setOtp(newOtp); 
+        tourist.setOtp(newOtp);
         touristDAO.registerTourist(tourist); // Update the user with new OTP
         // Send the new OTP to the user's email
         sendOTPEmail(tourist.getEmail(), newOtp);
@@ -180,48 +181,38 @@ public class TouristRestController {
 
     private String generateOTP() {
         Random random = new Random();
-        int otpNumber = 100000 + random.nextInt(900000); // Generate a random 6-digit OTP
+        int otpNumber = 1000 + random.nextInt(9000); // Generate a random 6-digit OTP
         return String.valueOf(otpNumber);
     }
 
+    // Method to send OTP via email
     private void sendOTPEmail(String recipientEmail, String otp) {
-        // Set up mail server properties
-        Properties properties = System.getProperties();
+        Properties properties = new Properties();
         properties.setProperty("mail.smtp.host", "smtp.gmail.com");
         properties.setProperty("mail.smtp.port", "587");
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.smtp.starttls.enable", "true");
 
-        // Get the default Session object.
-        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("12210097.ggcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
             }
         });
 
         try {
-            // Create a default MimeMessage object.
             MimeMessage message = new MimeMessage(session);
-
-            // Set From: header field of the header.
-            message.setFrom(new InternetAddress("12210097.gci@rub.edu.bt"));
-
-            // Set To: header field of the header.
+            message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-
-            // Set Subject: header field
-            message.setSubject("OTP for password change is:");
-
-            // Now set the actual message
+            message.setSubject("Your OTP for Verification");
             message.setText("Your OTP is: " + otp);
-
-            // Send message
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
+            System.err.println("Error sending email: " + mex.getMessage());
             mex.printStackTrace();
         }
     }
+
     @PostMapping("/tourists/enterForgotPasswordOtp")
     public ResponseEntity<String> enterForgotPasswordOtp(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");

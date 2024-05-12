@@ -207,10 +207,10 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     @Transactional
-    public void resendOTP(String email) {
-        Tourist tourist = findByEmail(email);
+    public void resendOTP(int id) {
+        Tourist tourist = findByID(id);
         if (tourist == null) {
-            throw new UserNotFoundException("User not found with email: " + email);
+            throw new UserNotFoundException("User not found with email: " + id);
         }
 
         String newOTP = generateOTP1();
