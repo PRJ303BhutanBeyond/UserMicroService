@@ -42,6 +42,12 @@ public class TouristDAOImpl implements TouristDAO {
         return query.getSingleResult();
     }
 
+    
+    // @Override
+    // public Tourist  findByEmail(String email) {
+    //     return entityManager.find(Tourist.class, email);
+    // }
+
     @Override
     @Transactional
     public void enable(int id, boolean enabled, String otp) {

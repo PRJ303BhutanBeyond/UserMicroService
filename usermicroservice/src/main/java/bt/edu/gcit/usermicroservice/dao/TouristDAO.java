@@ -12,7 +12,7 @@ public interface TouristDAO {
 
     Tourist registerTourist(Tourist tourist);
 
-    public Tourist findByEmail(String email);
+    Tourist findByEmail(String email);
 
     public void enable(int id, boolean enabled, String otp);
 
