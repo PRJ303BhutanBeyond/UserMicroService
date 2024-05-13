@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import bt.edu.gcit.usermicroservice.entity.Role;
+import bt.edu.gcit.usermicroservice.entity.Tourist;
+
 import java.util.Set;
 
 @RestController
@@ -97,6 +101,12 @@ public class UserRestController {
     public User updateUser(@PathVariable int id, @RequestBody User updatedUser) {
         return userService.updateUser(id, updatedUser);
     }
+
+    @GetMapping("/users/guide/all")
+    public List<User> getAllGuide() {
+        return userService.getAllGuide();
+    }
+
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {

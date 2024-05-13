@@ -3,6 +3,8 @@ package bt.edu.gcit.usermicroservice.service;
 import bt.edu.gcit.usermicroservice.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
+
 import bt.edu.gcit.usermicroservice.entity.AuthenticationType;
 
 public interface UserService {
@@ -28,4 +30,6 @@ public interface UserService {
     User findByID(int theId);
 
     User findByEmail(String email);
+
+    List<User> getAllGuide();
 }
