@@ -3,6 +3,7 @@ package bt.edu.gcit.usermicroservice.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.InvalidOtpException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
@@ -54,6 +55,15 @@ public class UserDAOImpl implements UserDAO {
         user.setEnabled(enabled);
         entityManager.persist(user);
     }
+
+    @Override
+    public List<User> getAllGuide(String roleName) {
+        TypedQuery<User> query = entityManager.createQuery(
+            "SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName", User.class);
+        query.setParameter("roleName", roleName);
+        return query.getResultList();
+    }
+
 
     @Override
     public void updateUserEnabledStatustourist(int id, boolean enabled, String otp) {

@@ -70,6 +70,7 @@ public class BhutanBeyondSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/checkDuplicateEmail").hasAuthority("Admin")
+                .requestMatchers(HttpMethod.GET, "/api/users/guide/all").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/users/{id}").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasAuthority("Admin")
                 .requestMatchers(HttpMethod.PUT, "/api/users/{id}/enabled").hasAuthority("Admin")

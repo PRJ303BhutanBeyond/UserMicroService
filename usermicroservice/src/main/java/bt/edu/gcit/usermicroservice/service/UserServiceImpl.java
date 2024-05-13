@@ -2,6 +2,7 @@ package bt.edu.gcit.usermicroservice.service;
 
 import bt.edu.gcit.usermicroservice.dao.UserDAO;
 import bt.edu.gcit.usermicroservice.entity.Role;
+import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 
@@ -9,6 +10,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -100,6 +102,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByID(int theId) {
         return userDAO.findByID(theId);
+    }
+
+
+    @Override
+    @Transactional
+    public List<User> getAllGuide() {
+        return userDAO.getAllGuide("Guide");
     }
 
     @Transactional
