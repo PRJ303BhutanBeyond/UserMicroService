@@ -18,6 +18,8 @@ public interface TouristService {
 
     Tourist findByEmail(String email);
 
+    Tourist getTouristByEmail(String email);
+
     boolean isEmailUnique(String email);
 
     public void enable(int id, boolean enabled, String otp);
@@ -34,6 +36,6 @@ public interface TouristService {
 
     void addNewTouristUponOAuthLogin(String name, String email, AuthenticationType authenticationType);
 
-    void resendOTP(String email);
+    void resendOTP(int id);
 
 }

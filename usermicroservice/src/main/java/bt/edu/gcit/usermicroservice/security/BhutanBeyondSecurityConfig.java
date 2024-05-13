@@ -68,6 +68,7 @@ public class BhutanBeyondSecurityConfig {
         http.authorizeHttpRequests(configurer -> configurer
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/tourists/find").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/checkDuplicateEmail").hasAuthority("Admin")
                 .requestMatchers(HttpMethod.PUT, "/api/users/{id}").permitAll()
