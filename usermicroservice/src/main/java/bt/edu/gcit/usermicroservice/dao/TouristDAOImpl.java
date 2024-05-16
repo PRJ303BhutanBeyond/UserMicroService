@@ -43,6 +43,18 @@ public class TouristDAOImpl implements TouristDAO {
     }
 
     @Override
+    @Transactional
+    public Tourist update(long id, Tourist updatedUser) {
+        Tourist existingUser = entityManager.find(Tourist.class, id);
+        if (existingUser != null) {
+            updatedUser.setId(existingUser.getId());
+            return entityManager.merge(updatedUser);
+        }
+
+        return null;
+    }
+
+    @Override
     public Tourist getTouristByEmail(String email) {
         return entityManager.find(Tourist.class, email);
     }

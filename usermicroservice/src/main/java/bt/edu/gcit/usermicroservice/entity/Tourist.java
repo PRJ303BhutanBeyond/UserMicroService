@@ -33,7 +33,7 @@ public class Tourist {
     @Column(nullable = true)
     private boolean enabled; // Changed from Boolean to boolean
 
-    @Column(name = "profile_photo", length = 64)
+    @Column(name = "profile_photo", length = 128, nullable = true)
     private String profilePhoto;
 
     @Column(length = 6)

@@ -258,4 +258,26 @@ public class TouristServiceImpl implements TouristService {
             mex.printStackTrace();
         }
     }
+
+    @Transactional
+    @Override
+    public Tourist updateTouristValue(long id, Tourist updatedUser) {
+        // First, find the user by ID
+        Tourist existingUser = touristDAO.getTouristById(id);
+        // If the user doesn't exist, throw UserNotFoundException
+        if (existingUser == null) {
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
+        // Update the existing user with the data from updatedUser
+        existingUser.setFullName(updatedUser.getFullName());
+        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        existingUser.setCountry(updatedUser.getCountry());
+        // Check if the password has changed. If it has, encode the new password before
+        // saving.
+        if (!existingUser.getPassword().equals(updatedUser.getPassword())) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        // Save the updated user and return it
+        return touristDAO.registerTourist(existingUser);
+    }
 }

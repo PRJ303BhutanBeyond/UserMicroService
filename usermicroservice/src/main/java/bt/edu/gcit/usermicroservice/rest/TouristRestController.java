@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bt.edu.gcit.usermicroservice.entity.Tourist;
-import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 import bt.edu.gcit.usermicroservice.service.TouristService;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,18 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import bt.edu.gcit.usermicroservice.dao.TouristDAO;
-import bt.edu.gcit.usermicroservice.entity.Role;
-import java.util.Set;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -44,6 +34,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
 @RestController
 @RequestMapping("/api")
@@ -52,55 +43,54 @@ public class TouristRestController {
     private TouristService touristService;
     private TouristDAO touristDAO;
     private final PasswordEncoder passwordEncoder;
+    private ImageUploadService imageUploadService;
 
     @Autowired
     public TouristRestController(TouristService touristService, TouristDAO touristDAO,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, ImageUploadService imageUploadService) {
         this.touristService = touristService;
         this.touristDAO = touristDAO;
         this.passwordEncoder = passwordEncoder;
+        this.imageUploadService = imageUploadService;
     }
 
-    @PostMapping("/tourists/register")
-    public Tourist save(@RequestBody Tourist customer) {
-        return touristService.registerTourist(customer);
+    // @PostMapping("/tourists/register")
+    // public Tourist save(@RequestBody Tourist customer) {
+    // return touristService.registerTourist(customer);
+    // }
+
+    @PostMapping(value = "/tourists/register", consumes = "multipart/form-data")
+    public Tourist save(@RequestParam("fullName") @Valid @NotNull String fullName,
+                        @RequestParam("email") @Valid @NotNull String email,
+                        @RequestParam("Password") @Valid @NotNull String Password,
+                        @RequestParam(value = "country", required = false) @Valid String country,
+                        @RequestParam(value = "phoneNumber", required = false) @Valid @NotNull String phoneNumber,
+                        @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto) {
+        try {
+            Tourist tourist = new Tourist();
+            tourist.setFullName(fullName);
+            tourist.setEmail(email);
+            tourist.setCountry(country);
+            tourist.setPhoneNumber(phoneNumber);
+            tourist.setPassword(Password);
+
+            System.out.println("Uploading photos");
+            // Save the user and get the ID
+            Tourist savedTourist = touristService.registerTourist(tourist);
+
+            if (profilePhoto != null && !profilePhoto.isEmpty()) {
+                String imageUrl = imageUploadService.uploadImage(profilePhoto);
+                savedTourist.setProfilePhoto(imageUrl);
+                // Update the user with the photo URL
+                touristService.updateTouristValue(savedTourist.getId().intValue(), savedTourist);
+            }
+
+            return savedTourist;
+        } catch (Exception e) {
+            // Handle the exception
+            throw new RuntimeException("Error during registration or photo upload", e);
+        }
     }
-
-    // @PostMapping(value = "/tourists/register", consumes = "multipart/form-data")
-    // public Tourist save(@RequestParam("fullName") @Valid @NotNull String
-    // fullName,
-    // @RequestParam("email") @Valid @NotNull String email,
-    // @RequestParam("Password") @Valid @NotNull String Password,
-    // @RequestParam(value="country", required = false) @Valid String country,
-    // @RequestParam(value = "phoneNumber" ,required = false) @Valid @NotNull String
-    // phoneNumber,
-    // @RequestParam(value = "profilePhoto", required = false) MultipartFile
-    // profilePhoto) {
-    // try {
-    // Tourist tourist = new Tourist();
-    // tourist.setFullName(fullName);
-    // tourist.setEmail(email);
-    // tourist.setCountry(country);
-    // tourist.setPhoneNumber(phoneNumber);
-    // tourist.setPassword(Password);
-
-    // System.out.println("Uploading photos");
-    // // Save the user and get the ID
-    // Tourist savedTourist = touristService.registerTourist(tourist);
-
-    // System.out.println("Uploading photos for user ID: " +
-    // savedTourist.getId().intValue());
-
-    // if (profilePhoto != null) {
-    // touristService.uploadUserPhoto(savedTourist.getId().intValue(),
-    // profilePhoto);
-    // }
-    // return savedTourist;
-    // } catch (IOException e) {
-    // // Handle the exception
-    // throw new RuntimeException("Error while uploading photos", e);
-    // }
-    // }
 
     @PutMapping("/tourists/{id}/enabled")
     public ResponseEntity<?> updateUserEnabledStatustourist(

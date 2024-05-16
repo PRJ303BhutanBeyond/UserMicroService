@@ -16,6 +16,8 @@ public interface TouristService {
 
     Tourist findByID(int theId);
 
+    Tourist updateTouristValue(long id, Tourist updatedUser);
+
     Tourist findByEmail(String email);
 
     Tourist getTouristByEmail(String email);

@@ -26,6 +26,8 @@ public interface TouristDAO {
 
     Tourist updateTourist(Tourist tourist);
 
+    Tourist update(long id, Tourist tourist);
+
     void deleteTourist(long id);
 
     String getOTPById(int touristId);
