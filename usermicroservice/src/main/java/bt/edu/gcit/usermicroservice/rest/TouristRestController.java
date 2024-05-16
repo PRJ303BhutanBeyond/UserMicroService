@@ -61,11 +61,11 @@ public class TouristRestController {
 
     @PostMapping(value = "/tourists/register", consumes = "multipart/form-data")
     public Tourist save(@RequestParam("fullName") @Valid @NotNull String fullName,
-                        @RequestParam("email") @Valid @NotNull String email,
-                        @RequestParam("Password") @Valid @NotNull String Password,
-                        @RequestParam(value = "country", required = false) @Valid String country,
-                        @RequestParam(value = "phoneNumber", required = false) @Valid @NotNull String phoneNumber,
-                        @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto) {
+            @RequestParam("email") @Valid @NotNull String email,
+            @RequestParam("Password") @Valid @NotNull String Password,
+            @RequestParam(value = "country", required = false) @Valid String country,
+            @RequestParam(value = "phoneNumber", required = false) @Valid @NotNull String phoneNumber,
+            @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto) {
         try {
             Tourist tourist = new Tourist();
             tourist.setFullName(fullName);
@@ -82,13 +82,44 @@ public class TouristRestController {
                 String imageUrl = imageUploadService.uploadImage(profilePhoto);
                 savedTourist.setProfilePhoto(imageUrl);
                 // Update the user with the photo URL
-                touristService.updateTouristValue(savedTourist.getId().intValue(), savedTourist);
+                touristService.updateTourist(savedTourist);
+                // touristService.updateTouristValue(savedTourist.getId().intValue(),
+                // savedTourist);
             }
 
             return savedTourist;
         } catch (Exception e) {
             // Handle the exception
             throw new RuntimeException("Error during registration or photo upload", e);
+        }
+    }
+
+    @PutMapping(value = "/tourists/updateDetails", consumes = "multipart/form-data")
+    public Tourist updateTourist(@RequestParam("email") @Valid @NotNull String email,
+            @RequestParam("fullName") @Valid @NotNull String fullName,
+            @RequestParam(value = "country", required = false) @Valid @NotNull String country,
+            @RequestParam(value = "phoneNumber", required = false) @Valid @NotNull String phoneNumber,
+            @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto) {
+        try {
+            Tourist tourist = touristService.findByEmail(email);
+            if (tourist == null) {
+                throw new UserNotFoundException("Tourist with email " + email + " not found.");
+            }
+
+            tourist.setFullName(fullName);
+            tourist.setEmail(email);
+            tourist.setCountry(country);
+            tourist.setPhoneNumber(phoneNumber);
+            System.out.println("Uploading photos");
+
+            if (profilePhoto != null && !profilePhoto.isEmpty()) {
+                String imageUrl = imageUploadService.uploadImage(profilePhoto);
+                tourist.setProfilePhoto(imageUrl);
+            }
+
+            return touristService.updateTourist(tourist);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during updating tourist details", e);
         }
     }
 
