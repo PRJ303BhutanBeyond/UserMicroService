@@ -80,12 +80,11 @@ public class BhutanBeyondSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/tourists/delete/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tourists/all").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/tourists/{id}").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/tourists/find").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/feedbacks").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/feedbacks/all").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/feedbacks/{id}").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/feedbacks/delete/{id}").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/tourists/{email}/resend-otp").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/tourists/{id}/resend-otp").permitAll()
 
         )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
