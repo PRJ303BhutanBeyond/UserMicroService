@@ -23,10 +23,10 @@ public class Feedback {
     @Column(name = "full_name", length = 45, nullable = false)
     private String fullName;
 
-    @Column(name = "profile_photo", length = 64)
+    @Column(name = "profile_photo", length = 128)
     private String profilePhoto;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
 
     @Column(name = "created_time", nullable = false)

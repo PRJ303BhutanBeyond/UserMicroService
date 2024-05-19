@@ -10,5 +10,7 @@ public interface FeedbackDAO {
     
     List<Feedback> getAllFeedbacks();
 
+    Feedback updateFeedback(Feedback feedback);
+
     void deleteFeedback(long id);
 }

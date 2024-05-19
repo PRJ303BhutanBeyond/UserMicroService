@@ -17,18 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bt.edu.gcit.usermicroservice.entity.Feedback;
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.service.FeedbackService;
+import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
 @RestController
 @RequestMapping("/api")
 public class FeedbackRestController {
 
     private FeedbackService feedbackService;
+    private ImageUploadService imageUploadService;
 
     @Autowired
-    public FeedbackRestController(FeedbackService feedbackService) {
+    public FeedbackRestController(FeedbackService feedbackService, ImageUploadService imageUploadService) {
         this.feedbackService = feedbackService;
+        this.imageUploadService = imageUploadService;
     }
 
     @PostMapping(value="/feedbacks", consumes = "multipart/form-data" )
@@ -50,17 +52,23 @@ public class FeedbackRestController {
 
             System.out.println("Saved feedback for user ID: " + savedFeedback.getId());
 
-            if (profilePhoto != null && !profilePhoto.isEmpty()) {
-                System.out.println("Uploading profile photo");
+            // if (profilePhoto != null && !profilePhoto.isEmpty()) {
+            //     System.out.println("Uploading profile photo");
 
-                feedbackService.uploadPhoto(savedFeedback.getId().intValue(), profilePhoto);
+            //     feedbackService.uploadPhoto(savedFeedback.getId().intValue(), profilePhoto);
 
-                System.out.println("Uploaded profile photo for user ID: " + savedFeedback.getId());
-            }
+            //     System.out.println("Uploaded profile photo for user ID: " + savedFeedback.getId());
+            // }
+            String imageUrl = imageUploadService.uploadImage(profilePhoto);
+                           savedFeedback.setprofilePhoto(imageUrl);
+
+                           // Update the user with the photo URL
+                           feedbackService.updateFeedback(savedFeedback);
+
 
             return savedFeedback;
-        } catch (IOException e) {
-            throw new RuntimeException("Error while processing feedback", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during updating tourist details", e);
         }
     }
 

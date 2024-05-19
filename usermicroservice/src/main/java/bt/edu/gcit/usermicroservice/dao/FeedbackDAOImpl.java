@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import bt.edu.gcit.usermicroservice.entity.Feedback;
 import bt.edu.gcit.usermicroservice.entity.Tourist;
@@ -29,6 +30,12 @@ public class FeedbackDAOImpl implements FeedbackDAO {
     @Override
     public Feedback getFeedbackById(long id) {
         return entityManager.find(Feedback.class, id);
+    }
+
+    @Override
+    @Transactional
+    public Feedback updateFeedback(Feedback feedback) {
+        return entityManager.merge(feedback);
     }
 
     @Override

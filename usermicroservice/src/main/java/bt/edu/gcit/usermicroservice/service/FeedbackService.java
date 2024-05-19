@@ -14,6 +14,8 @@ public interface FeedbackService {
 
     Feedback findByID(int theId);
 
+    Feedback updateFeedback(Feedback feedback);
+
     List<Feedback> getAllFeedbacks();
 
     void deleteFeedback(long id);
