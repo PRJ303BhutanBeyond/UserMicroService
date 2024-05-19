@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,24 +29,39 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import bt.edu.gcit.usermicroservice.dao.UserDAO;
 import bt.edu.gcit.usermicroservice.entity.Role;
 import bt.edu.gcit.usermicroservice.entity.Tourist;
+import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
 import java.util.Set;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
 
     private UserService userService;
+    private ImageUploadService imageUploadService;
+    private final UserDAO userDAO;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserRestController(UserService userService,UserDAO userDAO, ImageUploadService imageUploadService) {
         this.userService = userService;
+        this.userDAO = userDAO;
+        this.imageUploadService = imageUploadService;
     }
 
     @PostMapping(value = "/users", consumes = "multipart/form-data")
-    public User save(@RequestPart("fullName") @Valid @NotNull String fullName,
+    public ResponseEntity<User> save(@RequestPart("fullName") @Valid @NotNull String fullName,
             @RequestPart("email") @Valid @NotNull String email,
             @RequestPart("Password") @Valid @NotNull String Password,
             @RequestPart("address") @Valid String address,
@@ -70,15 +87,15 @@ public class UserRestController {
             // Save the user and get the ID
             User savedUser = userService.save(user);
 
-            System.out.println("Uploading photos for user ID: " + savedUser.getId().intValue());
+            String ProfilePhoto = imageUploadService.uploadImage(profilePhoto);
+            String LicensePhoto = imageUploadService.uploadLicenseImage(licensePhoto);
 
-            if (profilePhoto != null || licensePhoto != null) {
-                userService.uploadPhoto(savedUser.getId().intValue(), profilePhoto, licensePhoto);
-            }
+            savedUser.setProfilePhoto(ProfilePhoto);
+            savedUser.setLicensePhoto(LicensePhoto);
+            userService.updateUser(savedUser.getId().intValue(), savedUser);
 
-            return savedUser;
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
         } catch (IOException e) {
-            // Handle the exception
             throw new RuntimeException("Error while uploading photos", e);
         }
     }
@@ -107,7 +124,6 @@ public class UserRestController {
         return userService.getAllGuide();
     }
 
-
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteById(id);
@@ -128,6 +144,48 @@ public class UserRestController {
         System.out.println("User enabled status updated successfully");
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/users/disabled/{id}")
+    public ResponseEntity<?> disableUser(@PathVariable int id) {
+        User user = userDAO.findByID(id);
+        if (user == null) {
+            return ResponseEntity.ok("user not found");
+        }
+
+        sendDisabledEmail(user.getEmail());
+
+        return ResponseEntity.ok("Message successfully sent");
+    }
+
+    // Method to send OTP via email
+    private void sendDisabledEmail(String recipientEmail) {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+            message.setSubject("Your Registration failed");
+            message.setText(
+                    "Dear User,\n\nWe have noticed that there might be an issue with the license number associated with your account. To ensure accurate records and compliance, we kindly request you to provide your correct license number at your earliest convenience.\n\nIf you have any questions or concerns, please feel free to contact our support team.\n\nThank you for your cooperation.\n\nBest regards,\nThe [TimberHub] Team");
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            System.err.println("Error sending email: " + mex.getMessage());
+            mex.printStackTrace();
+        }
+    }
+
 
     @PutMapping("/users/{id}/enabled/guide")
     public ResponseEntity<?> updateUserEnabledStatustourist(

@@ -12,20 +12,28 @@ import java.util.Map;
 @Service
 public class ImageUploadService {
 
-   private final Cloudinary cloudinary;
+    private final Cloudinary cloudinary;
 
-   @Autowired
-   public ImageUploadService(Cloudinary cloudinary) {
-       this.cloudinary = cloudinary;
-   }
+    @Autowired
+    public ImageUploadService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
+    }
 
-   public String uploadImage(MultipartFile file) {
-       try {
-           Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-           return uploadResult.get("url").toString();
-       } catch (IOException e) {
-           throw new RuntimeException("Could not upload image", e);
-       }
-   }
+    public String uploadImage(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
+
+    public String uploadLicenseImage(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
 }
-

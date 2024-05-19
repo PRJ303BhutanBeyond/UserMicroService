@@ -45,28 +45,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
-        // Generate OTP
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        String otp = generateOTP();
 
-        // Set OTP for the user
-        user.setOtp(otp);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // Send OTP via email
-        sendOTPEmail(user.getEmail(), otp);
+        sendOTPEmail(user.getEmail());
 
         // Save user with OTP
         return userDAO.save(user);
     }
 
-    // Generate a 6-digit OTP
-    private String generateOTP() {
-        int otpNumber = 100000 + random.nextInt(900000); // Generates a random 6-digit number
-        return String.valueOf(otpNumber);
-    }
 
     // Method to send OTP via email
-    private void sendOTPEmail(String recipientEmail, String otp) {
+    private void sendOTPEmail(String recipientEmail) {
         Properties properties = new Properties();
         properties.setProperty("mail.smtp.host", "smtp.gmail.com");
         properties.setProperty("mail.smtp.port", "587");
@@ -75,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("12  ", "ptwe rdxi trtr bbwx");
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
             }
         });
 
@@ -83,8 +74,8 @@ public class UserServiceImpl implements UserService {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Your OTP for Verification");
-            message.setText("Your OTP is: " + otp);
+            message.setSubject("Registeration Successful");
+            message.setText("Great news! Your Guide account has been successfully established. Kindly await account validation by our administrative team. You can expect a confirmation email within the next 24 hours. Should you not receive it, please don't hesitate to reach out to us at either 17271244 or 1124.");
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {

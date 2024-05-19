@@ -32,10 +32,10 @@ public class User {
     @Column(name = "phone_no", length = 20, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "profile_photo", length = 64)
+    @Column(name = "profile_photo", length = 500)
     private String profilePhoto;
 
-    @Column(name = "license_photo", length = 64)
+    @Column(name = "license_photo", length = 500)
     private String licensePhoto;
 
     @Column(length = 6)
