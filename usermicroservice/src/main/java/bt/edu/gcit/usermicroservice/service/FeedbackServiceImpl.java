@@ -73,6 +73,12 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
+    public Feedback updateFeedback(Feedback feedback) {
+        return feedbackDAO.updateFeedback(feedback);
+    }
+
+    @Override
+    @Transactional
     public void deleteFeedback(long id) {
         feedbackDAO.deleteFeedback(id);
     }
