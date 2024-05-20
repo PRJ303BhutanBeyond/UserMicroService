@@ -20,6 +20,9 @@ public class Feedback {
     @Column(length = 128, nullable = false)
     private String email;
 
+    @Column(name="title", length = 128)
+    private String title;
+
     @Column(name = "full_name", length = 45, nullable = false)
     private String fullName;
 
@@ -52,6 +55,14 @@ public class Feedback {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getFullName() {
