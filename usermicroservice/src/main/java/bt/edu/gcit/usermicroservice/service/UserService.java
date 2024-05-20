@@ -32,4 +32,6 @@ public interface UserService {
     User findByEmail(String email);
 
     List<User> getAllGuide();
+
+    User disableUser(int id);
 }
