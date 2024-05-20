@@ -54,7 +54,7 @@ public class UserRestController {
     private final UserDAO userDAO;
 
     @Autowired
-    public UserRestController(UserService userService,UserDAO userDAO, ImageUploadService imageUploadService) {
+    public UserRestController(UserService userService, UserDAO userDAO, ImageUploadService imageUploadService) {
         this.userService = userService;
         this.userDAO = userDAO;
         this.imageUploadService = imageUploadService;
@@ -124,7 +124,7 @@ public class UserRestController {
         return userService.getAllGuide();
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteById(id);
     }
@@ -144,12 +144,11 @@ public class UserRestController {
         System.out.println("User enabled status updated successfully");
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/users/disabled/{id}")
+    @PostMapping("/users/{id}/disable")
     public ResponseEntity<?> disableUser(@PathVariable int id) {
-        User user = userDAO.findByID(id);
+        User user = userService.disableUser(id);
         if (user == null) {
-            return ResponseEntity.ok("user not found");
+            return ResponseEntity.ok("User not found");
         }
 
         sendDisabledEmail(user.getEmail());
@@ -185,7 +184,6 @@ public class UserRestController {
             mex.printStackTrace();
         }
     }
-
 
     @PutMapping("/users/{id}/enabled/guide")
     public ResponseEntity<?> updateUserEnabledStatustourist(

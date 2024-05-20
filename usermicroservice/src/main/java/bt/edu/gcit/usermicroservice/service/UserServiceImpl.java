@@ -230,6 +230,17 @@ public class UserServiceImpl implements UserService {
         user.setLicensePhoto(filename);
     }
 
+    @Transactional
+    @Override
+    public User disableUser(int id) {
+        User user = userDAO.findByID(id);
+        if (user != null) {
+            user.setEnabled(false);
+            userDAO.save(user);
+        }
+        return user;
+    }
+
     @Override
     public void sendGuideEnabledEmail(String to, String subject, String body) {
         // TODO Auto-generated method stub
