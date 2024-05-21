@@ -69,6 +69,7 @@ public class BhutanBeyondSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/tourists/find").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/find").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/tourists/updateDetails").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/checkDuplicateEmail").permitAll()

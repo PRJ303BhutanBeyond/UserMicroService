@@ -150,6 +150,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User findByEmail(String email) {
         return userDAO.findByEmail(email);
     }

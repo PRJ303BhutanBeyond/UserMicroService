@@ -204,4 +204,10 @@ public class UserRestController {
 
     }
 
+    @PostMapping("/users/find")
+    public User getUserByEmail(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        return userService.findByEmail(email);
+    }
+
 }
