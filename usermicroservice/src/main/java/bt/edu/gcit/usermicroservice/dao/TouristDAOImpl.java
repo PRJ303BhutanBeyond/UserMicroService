@@ -127,4 +127,15 @@ public class TouristDAOImpl implements TouristDAO {
         return (tourist != null) ? tourist.getOtp() : null;
     }
 
+    @Override
+    public void updateTouristEnabledStatus(int id, boolean enabled) {
+        Tourist tourist = entityManager.find(Tourist.class, id);
+        System.out.println(tourist);
+        if (tourist == null) {
+            throw new UserNotFoundException("User not found with id " + id);
+        }
+        tourist.setEnabled(enabled);
+        entityManager.persist(tourist);
+    }
+
 }

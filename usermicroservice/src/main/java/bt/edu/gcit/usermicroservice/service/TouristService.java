@@ -40,4 +40,9 @@ public interface TouristService {
 
     void resendOTP(int id);
 
+    void changePassword(String email, String oldPassword, String newPassword);
+
+    Tourist disableUser(int id);
+
+    void updateTouristEnabledStatus(int id, boolean enabled);
 }

@@ -34,4 +34,6 @@ public interface TouristDAO {
 
     void updateAuthenticationType(Long touristId,AuthenticationType type);
 
+    void updateTouristEnabledStatus(int id, boolean enabled);
+
 }

@@ -1,5 +1,6 @@
 package bt.edu.gcit.usermicroservice.rest;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 import bt.edu.gcit.usermicroservice.service.TouristService;
+import jakarta.transaction.Transactional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,10 +56,6 @@ public class TouristRestController {
         this.imageUploadService = imageUploadService;
     }
 
-    // @PostMapping("/tourists/register")
-    // public Tourist save(@RequestBody Tourist customer) {
-    // return touristService.registerTourist(customer);
-    // }
 
     @PostMapping(value = "/tourists/register", consumes = "multipart/form-data")
     public Tourist save(@RequestParam("fullName") @Valid @NotNull String fullName,
@@ -258,5 +256,88 @@ public class TouristRestController {
         tourist.setPassword(passwordEncoder.encode(newPassword));
         touristDAO.registerTourist(tourist); // Save the updated user
         return ResponseEntity.ok("Password updated successfully.");
+    }
+
+    
+    @PostMapping("/tourists/changePassword")
+    @Transactional
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String oldPassword = requestBody.get("oldPassword");
+        String newPassword = requestBody.get("newPassword");
+
+        // Check if the email exists in the database
+        Tourist tourist = touristService.findByEmail(email);
+        if (tourist == null) {
+            return ResponseEntity.badRequest().body("Email does not exist.");
+        }
+
+        // Attempt to change the password
+        try {
+            touristService.changePassword(email, oldPassword, newPassword);
+            return ResponseEntity.ok("Password changed successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while changing the password.");
+        }
+    }
+
+    @PostMapping("/{id}/disable")
+    public ResponseEntity<?> disableUser(@PathVariable int id) {
+        Tourist tourist = touristService.disableUser(id);
+        if (tourist == null) {
+            return ResponseEntity.ok("User not found");
+        }
+        sendDisabledEmail(tourist.getEmail());
+        return ResponseEntity.ok("Message successfully sent");
+    }
+
+    // Method to send OTP via email
+    private void sendDisabledEmail(String recipientEmail) {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+            message.setSubject("Your Registration failed");
+            message.setText(
+                    "Dear User,\r\n" +
+                            "\r\n" +
+                            "We regret to inform you that your account has been disabled due to some inappropriate activity. To resolve this issue, please contact our support team at 17271244 at your earliest convenience.\r\n"
+                            +
+                            "\r\n" +
+                            "If you have any questions or concerns, our support team is here to assist you.\r\n" +
+                            "\r\n" +
+                            "Thank you for your understanding.\r\n" +
+                            "\r\n" +
+                            "Best regards,\r\n" +
+                            "The BhutanBeyond Team\r\n" +
+                            "\r\n");
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            System.err.println("Error sending email: " + mex.getMessage());
+            mex.printStackTrace();
+        }
+    }
+
+    @PutMapping("/{id}/enabled")
+    public ResponseEntity<?> updateUserEnabledStatus(
+            @PathVariable int id, @RequestBody Map<String, Boolean> requestBody) {
+        Boolean enabled = requestBody.get("enabled");
+        touristService.updateTouristEnabledStatus(id, enabled);
+        System.out.println("User enabled status updated successfully");
+        return ResponseEntity.ok().build();
     }
 }

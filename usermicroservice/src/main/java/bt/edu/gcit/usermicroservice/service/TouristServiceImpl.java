@@ -136,8 +136,8 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     @Transactional
-    public Tourist  getTouristByEmail(String email) {
-        return touristDAO. getTouristByEmail(email);
+    public Tourist getTouristByEmail(String email) {
+        return touristDAO.getTouristByEmail(email);
     }
 
     @Override
@@ -279,5 +279,75 @@ public class TouristServiceImpl implements TouristService {
         }
         // Save the updated user and return it
         return touristDAO.registerTourist(existingUser);
+    }
+
+    public void changePassword(String email, String oldPassword, String newPassword) {
+        Tourist tourist = touristDAO.findByEmail(email);
+        if (tourist == null) {
+            throw new UserNotFoundException("User with the provided email does not exist.");
+        }
+        if (!passwordEncoder.matches(oldPassword, tourist.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect.");
+        }
+        tourist.setPassword(passwordEncoder.encode(newPassword));
+        touristDAO.registerTourist(tourist);
+    }
+
+    @Transactional
+    @Override
+    public Tourist disableUser(int id) {
+        Tourist tourist = touristDAO.getTouristById(id);
+        if (tourist != null) {
+            tourist.setEnabled(false);
+            touristDAO.registerTourist(tourist);
+        }
+        return tourist;
+    }
+
+    @Transactional
+    @Override
+    public void updateTouristEnabledStatus(int id, boolean enabled) {
+        touristDAO.updateTouristEnabledStatus(id, enabled);
+        if (enabled) {
+            Tourist tourist = touristDAO.getTouristById(id);
+            if (tourist != null) {
+                sendEnabledEmail(tourist.getEmail());
+            }
+        }
+    }
+
+    private void sendEnabledEmail(String userEmail) {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("12210097.gcit@rub.edu.bt", "ptwe rdxi trtr bbwx");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("12210097.gcit@rub.edu.bt"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
+            message.setSubject("Account Enabled Successfully");
+            message.setText(
+                "Dear User,\n\n" +
+                "We are pleased to inform you that your account has been successfully enabled. You can now log in and access all the features of our service.\n\n" +
+                "If you have any questions or need further assistance, please do not hesitate to contact our support team at 17271244.\n\n" +
+                "Thank you for your patience and understanding.\n\n" +
+                "Best regards,\n" +
+                "The BhuatnBeyond Team\n"
+            );
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            System.err.println("Error sending email: " + mex.getMessage());
+            mex.printStackTrace();
+        }
+
     }
 }
