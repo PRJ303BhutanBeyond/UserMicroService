@@ -36,4 +36,49 @@ public class ImageUploadService {
             throw new RuntimeException("Could not upload image", e);
         }
     }
+
+    public String uploadImage1(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
+
+    public String uploadImage2(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
+
+    public String uploadImage3(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
+
+    public String uploadImage4(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
+
+    public String uploadImage5(MultipartFile file) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload image", e);
+        }
+    }
 }
