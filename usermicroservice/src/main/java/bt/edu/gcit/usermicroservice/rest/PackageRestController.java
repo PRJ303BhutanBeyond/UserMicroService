@@ -85,6 +85,7 @@ public class PackageRestController {
             savedTourPackage.setPhoto3(imageUrl3);
             savedTourPackage.setPhoto4(imageUrl4);
             savedTourPackage.setPhoto5(imageUrl5);
+            
             packageService.updatePackage(savedTourPackage.getId().intValue(), savedTourPackage);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(savedTourPackage);
