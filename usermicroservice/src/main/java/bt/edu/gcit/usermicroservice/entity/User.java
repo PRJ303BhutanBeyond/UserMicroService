@@ -3,8 +3,6 @@ package bt.edu.gcit.usermicroservice.entity;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Date;
-
 import jakarta.persistence.*;
 
 @Entity
