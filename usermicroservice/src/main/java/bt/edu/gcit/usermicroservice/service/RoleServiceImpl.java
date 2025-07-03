@@ -1,6 +1,4 @@
 package bt.edu.gcit.usermicroservice.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import bt.edu.gcit.usermicroservice.dao.RoleDAO;
@@ -10,7 +8,6 @@ import bt.edu.gcit.usermicroservice.entity.Role;
 public class RoleServiceImpl implements RoleService {
     private RoleDAO roleDAO;
 
-    @Autowired
     public RoleServiceImpl(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }

@@ -1,9 +1,5 @@
 package bt.edu.gcit.usermicroservice.dao;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.InvalidOtpException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
@@ -16,7 +12,6 @@ public class UserDAOImpl implements UserDAO {
 
     private EntityManager entityManager;
 
-    @Autowired
     public UserDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

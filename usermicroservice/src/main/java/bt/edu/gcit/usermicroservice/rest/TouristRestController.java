@@ -1,7 +1,6 @@
 package bt.edu.gcit.usermicroservice.rest;
 
 import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +24,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import bt.edu.gcit.usermicroservice.dao.TouristDAO;
 
 import javax.mail.Message;
@@ -46,8 +43,6 @@ public class TouristRestController {
     private TouristDAO touristDAO;
     private final PasswordEncoder passwordEncoder;
     private ImageUploadService imageUploadService;
-
-    @Autowired
     public TouristRestController(TouristService touristService, TouristDAO touristDAO,
             PasswordEncoder passwordEncoder, ImageUploadService imageUploadService) {
         this.touristService = touristService;

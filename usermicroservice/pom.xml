@@ -75,19 +75,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<version>4.1.0</version>
-		</dependency>
+		</dependency> -->
 
 		<!--
 		https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 			<version>4.1.0</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -101,10 +101,10 @@
 			<version>1.24.0</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 

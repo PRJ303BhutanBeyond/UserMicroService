@@ -1,8 +1,6 @@
 package bt.edu.gcit.usermicroservice.dao;
 
 import java.util.List;
-
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.entity.User;
 
 public interface UserDAO {

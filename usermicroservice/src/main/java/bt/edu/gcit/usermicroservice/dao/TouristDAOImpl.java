@@ -1,18 +1,14 @@
 package bt.edu.gcit.usermicroservice.dao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import bt.edu.gcit.usermicroservice.entity.Tourist;
-import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.InvalidOtpException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-import java.util.UUID;
 
 import bt.edu.gcit.usermicroservice.entity.AuthenticationType;
 
@@ -21,7 +17,6 @@ public class TouristDAOImpl implements TouristDAO {
 
     private EntityManager entityManager;
 
-    @Autowired
     public TouristDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

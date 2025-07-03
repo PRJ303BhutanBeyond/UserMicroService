@@ -2,7 +2,6 @@ package bt.edu.gcit.usermicroservice.dao;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import bt.edu.gcit.usermicroservice.entity.TourPackage;
@@ -14,7 +13,6 @@ public class PackageDAOImpl implements PackageDAO {
 
     private EntityManager entityManager;
 
-    @Autowired
     public PackageDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

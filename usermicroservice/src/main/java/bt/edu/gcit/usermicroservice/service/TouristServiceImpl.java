@@ -10,8 +10,6 @@ import bt.edu.gcit.usermicroservice.exception.FileSizeException;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,12 +22,10 @@ import java.nio.file.Path;
 
 import java.nio.file.Paths;
 import java.util.Date;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.IOException;
 import javax.mail.*;
 import java.util.Random;
-import java.util.UUID;
 
 @Service
 public class TouristServiceImpl implements TouristService {
@@ -41,8 +37,6 @@ public class TouristServiceImpl implements TouristService {
     private final PasswordEncoder passwordEncoder;
     private final Random random;
     private final String uploadDir = "src/main/resources/static/images";
-
-    @Autowired
     public TouristServiceImpl(TouristDAO touristDAO, PasswordEncoder passwordEncoder) {
         this.touristDAO = touristDAO;
         this.passwordEncoder = passwordEncoder;

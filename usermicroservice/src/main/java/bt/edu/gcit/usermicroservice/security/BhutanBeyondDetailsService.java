@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bt.edu.gcit.usermicroservice.dao.UserDAO;
@@ -13,7 +12,6 @@ import bt.edu.gcit.usermicroservice.entity.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import bt.edu.gcit.usermicroservice.security.BhutanBeyondDetails;
 import bt.edu.gcit.usermicroservice.dao.TouristDAO; // import the new DAO for Customer entities
 import bt.edu.gcit.usermicroservice.entity.Tourist; // import the new Customer entity
 import java.util.Collections; // import the Collections class
@@ -24,7 +22,6 @@ public class BhutanBeyondDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
     private final TouristDAO touristDAO; // new DAO for Customer entities
 
-    @Autowired
     public BhutanBeyondDetailsService(UserDAO userDAO, TouristDAO touristDAO) {
         this.userDAO = userDAO;
         this.touristDAO = touristDAO; // initialize the new DAO

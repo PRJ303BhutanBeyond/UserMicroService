@@ -1,8 +1,6 @@
 package bt.edu.gcit.usermicroservice.entity;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity

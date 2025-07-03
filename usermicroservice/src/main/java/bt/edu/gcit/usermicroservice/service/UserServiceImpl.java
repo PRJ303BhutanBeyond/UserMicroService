@@ -1,8 +1,6 @@
 package bt.edu.gcit.usermicroservice.service;
 
 import bt.edu.gcit.usermicroservice.dao.UserDAO;
-import bt.edu.gcit.usermicroservice.entity.Role;
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.exception.UserNotFoundException;
 
@@ -13,8 +11,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +30,6 @@ public class UserServiceImpl implements UserService {
     private final Random random;
     private final String uploadDir = "src/main/resources/static/images";
 
-    @Autowired
     @Lazy
     public UserServiceImpl(UserDAO userDAO, BCryptPasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;

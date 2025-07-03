@@ -1,34 +1,23 @@
 package bt.edu.gcit.usermicroservice.rest;
-
-import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import bt.edu.gcit.usermicroservice.entity.Feedback;
 import bt.edu.gcit.usermicroservice.service.FeedbackService;
-import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
 @RestController
 @RequestMapping("/api")
 public class FeedbackRestController {
 
     private FeedbackService feedbackService;
-    // private ImageUploadService imageUploadService;
-
-    @Autowired
     public FeedbackRestController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
         // this.imageUploadService = imageUploadService;

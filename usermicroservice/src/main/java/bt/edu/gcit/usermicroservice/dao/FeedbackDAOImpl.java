@@ -1,13 +1,10 @@
 package bt.edu.gcit.usermicroservice.dao;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import bt.edu.gcit.usermicroservice.entity.Feedback;
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
@@ -16,7 +13,6 @@ public class FeedbackDAOImpl implements FeedbackDAO {
 
     private EntityManager entityManager;
 
-    @Autowired
     public FeedbackDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

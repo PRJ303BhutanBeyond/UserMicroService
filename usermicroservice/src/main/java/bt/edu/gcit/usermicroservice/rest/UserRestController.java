@@ -1,6 +1,4 @@
 package bt.edu.gcit.usermicroservice.rest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,11 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bt.edu.gcit.usermicroservice.entity.User;
 import bt.edu.gcit.usermicroservice.service.UserService;
+import bt.edu.gcit.usermicroservice.dao.UserDAO;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -23,13 +23,9 @@ import java.util.Properties;
 
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-// import javax.validation.Valid;
-// import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-
-import bt.edu.gcit.usermicroservice.dao.UserDAO;
 import bt.edu.gcit.usermicroservice.entity.Role;
 import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
@@ -47,11 +43,10 @@ import javax.mail.internet.MimeMessage;
 @RequestMapping("/api")
 public class UserRestController {
 
-    private UserService userService;
-    private ImageUploadService imageUploadService;
     private final UserDAO userDAO;
 
-    @Autowired
+    private UserService userService;
+    private ImageUploadService imageUploadService;
     public UserRestController(UserService userService, UserDAO userDAO, ImageUploadService imageUploadService) {
         this.userService = userService;
         this.userDAO = userDAO;
