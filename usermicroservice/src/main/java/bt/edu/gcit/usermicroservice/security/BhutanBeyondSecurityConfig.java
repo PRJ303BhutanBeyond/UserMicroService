@@ -18,8 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.Arrays;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import bt.edu.gcit.usermicroservice.security.oauth.TouristOAuth2UserService;
-import bt.edu.gcit.usermicroservice.security.oauth.OAuth2LoginSuccessHandler;
+// import bt.edu.gcit.usermicroservice.security.oauth.TouristOAuth2UserService;
+// import bt.edu.gcit.usermicroservice.security.oauth.OAuth2LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -34,11 +34,11 @@ public class BhutanBeyondSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private TouristOAuth2UserService oAuth2UserService;
+    // @Autowired
+    // private TouristOAuth2UserService oAuth2UserService;
 
-    @Autowired
-    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    // @Autowired
+    // private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
@@ -99,11 +99,11 @@ public class BhutanBeyondSecurityConfig {
         )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.oauth2Login()
-                .userInfoEndpoint()
-                .userService(oAuth2UserService)
-                .and()
-                .successHandler(oAuth2LoginSuccessHandler);
+        // http.oauth2Login()
+        //         .userInfoEndpoint()
+        //         .userService(oAuth2UserService)
+        //         .and()
+        //         .successHandler(oAuth2LoginSuccessHandler);
 
         // disable CSRF
         http.csrf().disable();

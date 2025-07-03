@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 // import javax.validation.Valid;
@@ -32,7 +31,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import bt.edu.gcit.usermicroservice.dao.UserDAO;
 import bt.edu.gcit.usermicroservice.entity.Role;
-import bt.edu.gcit.usermicroservice.entity.Tourist;
 import bt.edu.gcit.usermicroservice.service.ImageUploadService;
 
 import java.util.Set;
