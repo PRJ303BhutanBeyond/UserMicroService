@@ -60,38 +60,12 @@ public class BhutanBeyondSecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tourists/find").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/find").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/roles").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/tourists/updateDetails").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/checkDuplicateEmail").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/guide/all").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/users/{id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/users/delete/{id}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/users/{id}/enabled").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/{id}/disable").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tourists/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tourists/changePassword").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/tourists/{id}/enabled").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/tourists/delete/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tourists/all").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tourists/{id}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/feedbacks").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/feedbacks/all").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/feedbacks/{id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/feedbacks/delete/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tourists/{id}/resend-otp").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/packages").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/packages/all").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/packages/{id}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/packages/update/{id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/packages/delete/{id}").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll() // allow all your booking endpoints
+                        .anyRequest().permitAll());
+
+        // .addFilterBefore(jwtRequestFilter,
+        // UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -110,3 +84,35 @@ public class BhutanBeyondSecurityConfig {
         return source;
     }
 }
+
+// .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/tourists/find").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/users/find").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/roles").permitAll()
+// .requestMatchers(HttpMethod.PUT, "/api/tourists/updateDetails").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+// .requestMatchers(HttpMethod.GET,
+// "/api/users/checkDuplicateEmail").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/users/guide/all").permitAll()
+// .requestMatchers(HttpMethod.PUT, "/api/users/{id}").permitAll()
+// .requestMatchers(HttpMethod.DELETE, "/api/users/delete/{id}").permitAll()
+// .requestMatchers(HttpMethod.PUT, "/api/users/{id}/enabled").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/users/{id}/disable").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/tourists/*").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/tourists/changePassword").permitAll()
+// .requestMatchers(HttpMethod.PUT, "/api/tourists/{id}/enabled").permitAll()
+// .requestMatchers(HttpMethod.DELETE, "/api/tourists/delete/{id}").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/tourists/all").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/tourists/{id}").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/feedbacks").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/feedbacks/all").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/feedbacks/{id}").permitAll()
+// .requestMatchers(HttpMethod.DELETE, "/api/feedbacks/delete/{id}").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/tourists/{id}/resend-otp").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/packages").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/packages/all").permitAll()
+// .requestMatchers(HttpMethod.GET, "/api/packages/{id}").permitAll()
+// .requestMatchers(HttpMethod.PUT, "/api/packages/update/{id}").permitAll()
+// .requestMatchers(HttpMethod.DELETE, "/api/packages/delete/{id}").permitAll()
+// .anyRequest().authenticated())
